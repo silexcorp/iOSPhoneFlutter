@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iphone_calls/call.dart';
 import 'package:iphone_calls/data_providers.dart';
 import 'constants.dart';
+import 'data_bank.dart';
 
 class ContactsPage extends StatefulWidget {
   @override
@@ -19,8 +20,8 @@ class _ContactsPageState extends State<ContactsPage> {
   List<Widget> getStartingLetters() {
     Set<String> out_set = Set();
 
-    for (PhoneCall pc in calls_persistent) {
-      out_set.add(pc.name[0]);
+    for (String pc in names_list) {
+      out_set.add(pc[0]);
     }
 
     var out_list = out_set.toList();
@@ -28,6 +29,7 @@ class _ContactsPageState extends State<ContactsPage> {
 
     List<Widget> out = [];
     out_list.forEach((l) {
+      print(l);
       out.add(InkWell(
         onTap: () {
           print("Fast scroll to $l");
@@ -41,7 +43,6 @@ class _ContactsPageState extends State<ContactsPage> {
         ),
       ));
     });
-
     return out;
   }
 
@@ -50,11 +51,11 @@ class _ContactsPageState extends State<ContactsPage> {
 
     SplayTreeMap<String, Set<String>> groupedContacts = SplayTreeMap();
 
-    for (PhoneCall pc in calls_persistent) {
-      if (!groupedContacts.containsKey(pc.name[0])) {
-        groupedContacts[pc.name[0]] = Set<String>();
+    for (String pc in names_list) {
+      if (!groupedContacts.containsKey(pc[0])) {
+        groupedContacts[pc[0]] = Set<String>();
       }
-      groupedContacts[pc.name[0]].add(pc.name);
+      groupedContacts[pc[0]].add(pc);
     }
     double totalShift = 0;
     groupedContacts.forEach((k, v) {
