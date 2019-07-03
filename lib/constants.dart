@@ -65,3 +65,5 @@ const kKeyPadNumberTextStyle = TextStyle(
   fontSize: 45,
   fontWeight: FontWeight.w400,
 );
+
+final kColorGreyShade200 = Colors.grey.shade200;

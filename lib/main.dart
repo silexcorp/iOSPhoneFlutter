@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => RecentCalls(),
-        '/contacts': (context) => ContactsPage(),
       },
     );
   }
@@ -30,41 +29,53 @@ class RecentCalls extends StatefulWidget {
 }
 
 class _RecentCallsState extends State<RecentCalls> {
-  List<PhoneCall> calls;
-  List<Widget> callList;
-  String _allOrMissedControlGroupValue;
+  String _allOrMissedControlGroupValue = kAllCalls;
   ListState _listState = ListState.VIEWING;
   bool _showMissingOnly = false;
   int _bottomBarIndex = 1;
-  List<Widget> bottomBarChildren = [];
 
-  Widget getAppbarFromBottomBar(int index) {
+  Widget getAppbarFromBottomBarIndex(int index) {
+    /// Depending on the index of the bottom bar, we want to show different
+    /// states of the Appbar. Sometimes it is just header, but often it contains
+    /// some control elements. So functions contains the configuration logic for
+    /// the this.
+    /// 0 - Favourites
+    /// 1 - Recents
+    /// 2 - Contacts
+    /// 3 - Keypad
+    /// 4 - Voicemail
+
     if (index == 0) {
     } else if (index == 1) {
+      /// We need to show differnt controls depending on the state of the list.
+      /// If Edit was pressed, then we need to show two buttons: Clear and Done.
+      /// Otherwise we need to show just one button: edit.
       return AppBar(
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: kColorGreyShade200,
         elevation: 0,
         title: Container(
-          color: Colors.grey.shade200,
+          color: kColorGreyShade200,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Visibility(
+                // This allows to keep occupying space so that other controls in
+                // this row do not move left or right when widget becomes
+                // invisible
                 maintainSize: true,
                 maintainAnimation: true,
                 maintainState: true,
+                // This control is invisible if we are not editing the list
                 visible: _listState == ListState.EDITING,
                 child: InkWell(
                   child: Text("Clear", style: kAppleActionButtonTextStyle),
-                  onTap: () {
-                    print("You pressed clear and eveything will be deleted");
-                  },
+                  onTap: () {},
                 ),
               ),
               CupertinoSegmentedControl(
                 groupValue: _allOrMissedControlGroupValue,
                 onValueChanged: (key) {
-                  print(key);
+                  // Again, we set our state depending on what mode we are in
                   if (key == kAllCalls) {
                     setState(() {
                       _showMissingOnly = false;
@@ -89,6 +100,9 @@ class _RecentCallsState extends State<RecentCalls> {
                 },
               ),
               SizedBox(
+                // Sizebox to occupy enough space. Done takes more pixels than
+                // Edit, therefore we need to reserve this space so that stuff
+                // of the left does not float around.
                 width: 40,
                 child: InkWell(
                   child: Text(editButtonText[_listState],
@@ -110,9 +124,10 @@ class _RecentCallsState extends State<RecentCalls> {
         ),
       );
     } else if (index == 2) {
+      // Contacts
       return AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: kColorGreyShade200,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -129,15 +144,24 @@ class _RecentCallsState extends State<RecentCalls> {
         ),
       );
     } else if (index == 3) {
+      // We have NO appbar for keypad
     } else if (index == 4) {
+      // Voicemail section
       return AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey.shade200,
+        backgroundColor: kColorGreyShade200,
       );
     }
   }
 
   Widget getPageFromBottombar(int index) {
+    /// Depending on the index, we need to get different pages for our app.
+    /// Same logic applies here:
+    /// 0 - Favourites
+    /// 1 - Recents
+    /// 2 - Contacts
+    /// 3 - Keypad
+    /// 4 - Voicemail
     if (index == 0) {
       return Container();
     } else if (index == 1) {
@@ -146,6 +170,7 @@ class _RecentCallsState extends State<RecentCalls> {
           Expanded(
             flex: 10,
             child: ListView(
+              // We get out listview from function call.
               children: getListOfCalls(_showMissingOnly, _listState),
             ),
           ),
@@ -161,7 +186,18 @@ class _RecentCallsState extends State<RecentCalls> {
   }
 
   List<Widget> getListOfCalls(bool onlyMissed, ListState state) {
+    /// Function returns a list of widgets that contain information that
+    /// depends on the following variables:
+    /// onlyMissed - boolean telling whether to show only calls that were missed
+    /// state - Are we editing or viewing the list? Depending on that, we need
+    /// different icons in each record
+    ///
+
+    // Final output
     List<Widget> newListOfCalls = [];
+
+    // In iOS when you scroll list of calls up, Recents text captions disappears
+    // To simulate this behaviour, we will put this caption as a part of the ListView.
     newListOfCalls.add(Container(
       color: Colors.grey.shade200,
       child: Padding(
@@ -173,6 +209,8 @@ class _RecentCallsState extends State<RecentCalls> {
       ),
     ));
 
+    // Basically, go through each call, depending on our requests include or
+    // not included non-missed calls.
     for (PhoneCall call in calls_persistent.reversed) {
       if (onlyMissed && !call.isMissed) {
         continue;
@@ -191,6 +229,7 @@ class _RecentCallsState extends State<RecentCalls> {
 
   @override
   void initState() {
+    /// Initially we just need to get a list of calls and fill the list out
     getListOfCalls(false, ListState.VIEWING);
   }
 
@@ -232,7 +271,8 @@ class _RecentCallsState extends State<RecentCalls> {
           ),
         ],
       ),
-      appBar: getAppbarFromBottomBar(_bottomBarIndex),
+      // Nothing to complicated, get bottom bar and the main page of the app
+      appBar: getAppbarFromBottomBarIndex(_bottomBarIndex),
       body: getPageFromBottombar(_bottomBarIndex),
     );
   }
