@@ -16,8 +16,13 @@ class _ContactsPageState extends State<ContactsPage> {
   double _NAME_HEIGHT = 30;
   Map<String, double> _letterPositions = {};
   var _scrollController = new ScrollController();
+  bool inSearchState = false;
+  String searchValue;
 
   List<Widget> getStartingLetters() {
+    if (inSearchState) {
+      return [];
+    }
     Set<String> out_set = Set();
 
     for (String pc in names_list) {
@@ -29,10 +34,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
     List<Widget> out = [];
     out_list.forEach((l) {
-      print(l);
       out.add(InkWell(
         onTap: () {
-          print("Fast scroll to $l");
           _scrollController.jumpTo(
             _letterPositions[l],
           );
@@ -43,6 +46,46 @@ class _ContactsPageState extends State<ContactsPage> {
         ),
       ));
     });
+    return out;
+  }
+
+  List<Widget> getContactListMaster() {
+    if (!inSearchState) {
+      return getContactList();
+    }
+    return getSearchResult();
+  }
+
+  List<Widget> getSearchResult() {
+    List<Widget> out = [];
+    for (String name in names_list) {
+      if (!name.toLowerCase().contains(searchValue)){
+        continue;
+      }
+      if (out.isEmpty){
+        out.add(Container(
+          color: Colors.grey.shade300,
+          height: _NAME_HEIGHT,
+          child: Text(
+            "Top search results",
+            style: TextStyle(
+              fontSize: 20,
+            ),
+          ),
+        ));
+        out.add(Divider());
+      }
+      out.add(Container(
+        height: _NAME_HEIGHT,
+        child: Text(
+          name,
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      ));
+      out.add(Divider());
+    }
     return out;
   }
 
@@ -94,9 +137,8 @@ class _ContactsPageState extends State<ContactsPage> {
         ));
         if (ct < l - 1) {
           out.add(Divider());
-          totalShift+=16;
+          totalShift += 16;
         }
-
         ct++;
       }
     });
@@ -126,6 +168,13 @@ class _ContactsPageState extends State<ContactsPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: TextField(
+                  onChanged: (searchValue) {
+                    print(searchValue);
+                    setState(() {
+                      inSearchState = searchValue.length > 0;
+                      this.searchValue = searchValue.toLowerCase();
+                    });
+                  },
                   decoration: InputDecoration(
                       border: new OutlineInputBorder(
                         borderRadius: const BorderRadius.all(
@@ -147,7 +196,7 @@ class _ContactsPageState extends State<ContactsPage> {
                 flex: 30,
                 child: ListView(
                   controller: _scrollController,
-                  children: getContactList(),
+                  children: getContactListMaster(),
                 ),
               ),
               Expanded(
