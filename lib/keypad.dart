@@ -9,15 +9,56 @@ class Keypad extends StatefulWidget {
 class _KeypadState extends State<Keypad> {
   String typedNumber = "";
 
+  TextStyle rebuildTextStyle() {
+    if (typedNumber.length <= 10) {
+      return TextStyle(
+        fontSize: 45,
+        fontWeight: FontWeight.w400,
+      );
+    } else if (typedNumber.length < 13) {
+      return TextStyle(
+        fontSize: 35,
+        fontWeight: FontWeight.w400,
+      );
+    } else {
+      return TextStyle(
+        fontSize: 30,
+        fontWeight: FontWeight.w400,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: <Widget>[
-          Text("$typedNumber",style: TextStyle(
-            fontSize: 60,
-            fontWeight: FontWeight.w400
-          ),),
+          Padding(
+            padding:
+                const EdgeInsets.only(bottom: 10, left: 0, right: 0, top: 40),
+            child: SizedBox(
+              height: 50,
+              child: Text(
+                "${typedNumber.length > 15 ? '...' + typedNumber.substring(typedNumber.length - 15, typedNumber.length) : typedNumber}",
+                style: rebuildTextStyle(),
+              ),
+            ),
+          ),
+          Visibility(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                bottom: 20,
+              ),
+              child: Text(
+                "Add Number",
+                style: kAppleActionButtonTextStyle,
+              ),
+            ),
+            maintainState: true,
+            visible: typedNumber.length > 0,
+            maintainAnimation: true,
+            maintainSize: true,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -31,19 +72,23 @@ class _KeypadState extends State<Keypad> {
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "2", onPressed: () {
-                setState(() {
-                  typedNumber += "2";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "2",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "2";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "3", onPressed: () {
-                setState(() {
-                  typedNumber += "3";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "3",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "3";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               )
@@ -55,27 +100,33 @@ class _KeypadState extends State<Keypad> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              NumberedRoundButton(num: "4", onPressed: () {
-                setState(() {
-                  typedNumber += "4";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "4",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "4";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "5", onPressed: () {
-                setState(() {
-                  typedNumber += "5";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "5",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "5";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "6", onPressed: () {
-                setState(() {
-                  typedNumber += "6";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "6",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "6";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               )
@@ -87,27 +138,33 @@ class _KeypadState extends State<Keypad> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              NumberedRoundButton(num: "7", onPressed: () {
-                setState(() {
-                  typedNumber += "7";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "7",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "7";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "8", onPressed: () {
-                setState(() {
-                  typedNumber += "8";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "8",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "8";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "9", onPressed: () {
-                setState(() {
-                  typedNumber += "9";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "9",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "9";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               )
@@ -119,27 +176,40 @@ class _KeypadState extends State<Keypad> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              NumberedRoundButton(num: '*', onPressed: () {
-                setState(() {
-                  typedNumber += "*";
-                });
-              }),
+              NumberedRoundButton(
+                  num: '*',
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "*";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "0", onPressed: () {
-                setState(() {
-                  typedNumber += "0";
-                });
-              }),
+              GestureDetector(
+                onLongPress: () {
+                  setState(() {
+                    typedNumber += '+';
+                  });
+                },
+                child: NumberedRoundButton(
+                    num: "0",
+                    onPressed: () {
+                      setState(() {
+                        typedNumber += "0";
+                      });
+                    }),
+              ),
               SizedBox(
                 width: 20,
               ),
-              NumberedRoundButton(num: "#", onPressed: () {
-                setState(() {
-                  typedNumber += "#";
-                });
-              }),
+              NumberedRoundButton(
+                  num: "#",
+                  onPressed: () {
+                    setState(() {
+                      typedNumber += "#";
+                    });
+                  }),
               SizedBox(
                 width: 20,
               ),
@@ -165,11 +235,18 @@ class _KeypadState extends State<Keypad> {
                 width: 20,
               ),
               Visibility(
-                visible: false,
+                visible: typedNumber.length > 0,
                 maintainSize: true,
                 maintainAnimation: true,
                 maintainState: true,
-                child: NumberedRoundButton(num: "#", onPressed: () {}),
+                child: DeleteButton(
+                  onPressed: () {
+                    setState(() {
+                      typedNumber =
+                          typedNumber.substring(0, typedNumber.length - 1);
+                    });
+                  },
+                ),
               ),
               SizedBox(
                 width: 20,
@@ -196,7 +273,12 @@ class NumberedRoundButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("$num", style: kKeyPadNumberTextStyle),
-            Text("${numToTextMapping[num]}"),
+            Text(
+              "${numToTextMapping[num]}",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ]),
     );
   }
@@ -213,7 +295,7 @@ class RoundButton extends StatelessWidget {
     return RawMaterialButton(
       child: child,
       onPressed: onPressed,
-      elevation: 6.0,
+      elevation: 0.0,
       constraints: BoxConstraints.tightFor(
         width: 76.0,
         height: 76.0,
@@ -239,13 +321,38 @@ class RoundIconButton extends StatelessWidget {
         color: Colors.white,
       ),
       onPressed: onPressed,
-      elevation: 6.0,
+      elevation: 0.0,
       constraints: BoxConstraints.tightFor(
         width: 76.0,
         height: 76.0,
       ),
       shape: CircleBorder(),
       fillColor: Colors.lightGreenAccent,
+    );
+  }
+}
+
+class DeleteButton extends StatelessWidget {
+  DeleteButton({this.onPressed});
+
+  final Function onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return RawMaterialButton(
+      child: Icon(
+        Icons.backspace,
+        size: 45,
+        color: Colors.grey.shade300,
+      ),
+      onPressed: onPressed,
+      elevation: 0.0,
+      constraints: BoxConstraints.tightFor(
+        width: 76.0,
+        height: 76.0,
+      ),
+      shape: CircleBorder(),
+      fillColor: null,
     );
   }
 }
