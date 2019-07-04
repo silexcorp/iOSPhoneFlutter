@@ -6,10 +6,17 @@ class Keypad extends StatefulWidget {
   _KeypadState createState() => _KeypadState();
 }
 
+/// Building keypad is just a lot of rounded buttons creation, so nothing too
+/// interesting here.
+///
+/// The only thing worth point attention to is the adaptive text size and phone
+/// number formatting when a number gets too long.
+
 class _KeypadState extends State<Keypad> {
   String typedNumber = "";
 
   TextStyle rebuildTextStyle() {
+    /// Return different text styles depending on the number of symbols in it
     if (typedNumber.length <= 10) {
       return TextStyle(
         fontSize: 45,
@@ -39,12 +46,16 @@ class _KeypadState extends State<Keypad> {
             child: SizedBox(
               height: 50,
               child: Text(
+                /// If number gets really long, we truncate it to show only the
+                /// last 15 symbols, and everything else gets replaced by ...
                 "${typedNumber.length > 15 ? '...' + typedNumber.substring(typedNumber.length - 15, typedNumber.length) : typedNumber}",
                 style: rebuildTextStyle(),
               ),
             ),
           ),
           Visibility(
+            /// if there is any number entered we should be able to add this numbers
+            /// to the contact list
             child: Padding(
               padding: const EdgeInsets.only(
                 bottom: 20,
@@ -187,6 +198,7 @@ class _KeypadState extends State<Keypad> {
                 width: 20,
               ),
               GestureDetector(
+                /// When doing a long tap on 0 button, we enter +
                 onLongPress: () {
                   setState(() {
                     typedNumber += '+';
@@ -235,6 +247,7 @@ class _KeypadState extends State<Keypad> {
                 width: 20,
               ),
               Visibility(
+                /// If there is any numbers seen, then we should be able to delete it
                 visible: typedNumber.length > 0,
                 maintainSize: true,
                 maintainAnimation: true,
