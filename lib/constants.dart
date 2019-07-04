@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+const int HOURS_PER_DAY = 24;
+const int MAX_DAYS_LOOK_BACK = 14;
+const int RECORDS_TO_GENERATE = 100;
+
 const TextStyle kNonMissedCallNameTextStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,

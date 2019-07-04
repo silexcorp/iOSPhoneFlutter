@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
+/// Building Voicemail page is an extremely straightforward activity.
+
 class VoiceMailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
