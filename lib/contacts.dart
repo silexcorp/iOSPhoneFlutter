@@ -19,14 +19,14 @@ class _ContactsPageState extends State<ContactsPage> {
   /// If we are filtering list by names, we change the layout of widget. These
   /// two variables state whether we are in the search state right now and if we a
   /// are, what searchValue tells what we are looking for.
-  bool inSearchState = false;
-  String searchValue;
+  bool _inSearchState = false;
+  String _searchValue;
 
   List<Widget> getStartingLetters() {
     /// This functions goes through all contacts details and finds all starting
     /// letters of the names in the list. They are later used to implement quick
     /// jump to the letter functionality
-    if (inSearchState) {
+    if (_inSearchState) {
       /// When we are in the search state we do not need to display that column
       return [];
     }
@@ -64,7 +64,7 @@ class _ContactsPageState extends State<ContactsPage> {
     /// This is small facade for the drawing widgets.
     /// If we are in the search state, we drawn a normal contact list
     /// Otherwise we are drawing search results widgets
-    if (!inSearchState) {
+    if (!_inSearchState) {
       return getContactList();
     }
     return getSearchResult();
@@ -76,7 +76,7 @@ class _ContactsPageState extends State<ContactsPage> {
     /// any contacts
     List<Widget> out = [];
     for (String name in names_list) {
-      if (!name.toLowerCase().contains(searchValue)){
+      if (!name.toLowerCase().contains(_searchValue)){
         continue;
       }
       if (out.isEmpty){
@@ -211,8 +211,8 @@ class _ContactsPageState extends State<ContactsPage> {
                   onChanged: (searchValue) {
                     print(searchValue);
                     setState(() {
-                      inSearchState = searchValue.length > 0;
-                      this.searchValue = searchValue.toLowerCase();
+                      _inSearchState = searchValue.length > 0;
+                      this._searchValue = searchValue.toLowerCase();
                     });
                   },
                   decoration: InputDecoration(
