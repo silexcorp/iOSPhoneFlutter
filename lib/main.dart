@@ -271,7 +271,7 @@ class _RecentCallsState extends State<RecentCalls> {
           ),
         ],
       ),
-      // Nothing to complicated, get bottom bar and the main page of the app
+      // Nothing too complicated, get bottom bar and the main page of the app
       appBar: getAppbarFromBottomBarIndex(_bottomBarIndex),
       body: getPageFromBottombar(_bottomBarIndex),
     );

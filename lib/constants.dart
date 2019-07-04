@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
 
-final Color kBackGroundGreyColor = Colors.grey.shade200;
-
-final TextStyle kLargeCaptionLabelTextStyle = TextStyle(
-  fontSize: 50,
-  backgroundColor: kBackGroundGreyColor,
-  fontWeight: FontWeight.bold,
-);
-
 const TextStyle kNonMissedCallNameTextStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.bold,
@@ -33,6 +25,9 @@ const TextStyle kAppleActionButtonTextStyleAccent = TextStyle(
 const TextStyle kCallSourceTextStyle = TextStyle(
   color: Colors.grey,
 );
+
+const double kContactsListLetterHeight = 20;
+const double kContactsListNameHeight = 30;
 
 enum ListState { EDITING, VIEWING }
 
@@ -67,3 +62,11 @@ const kKeyPadNumberTextStyle = TextStyle(
 );
 
 final kColorGreyShade200 = Colors.grey.shade200;
+
+final Color kBackGroundGreyColor = Colors.grey.shade200;
+
+final TextStyle kLargeCaptionLabelTextStyle = TextStyle(
+  fontSize: 50,
+  backgroundColor: kBackGroundGreyColor,
+  fontWeight: FontWeight.bold,
+);
